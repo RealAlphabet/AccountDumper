@@ -1,0 +1,19 @@
+{
+  "name": "sms-history",
+  "version": "1.0.0",
+  "description": "A lightweight utility for backing up and displaying your SMS.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "sms",
+    "history",
+    "tracker"
+  ],
+  "author": "Dot.",
+  "license": "ISC",
+  "dependencies": {
+    "fast-csv": "^2.4.1"
+  }
+}

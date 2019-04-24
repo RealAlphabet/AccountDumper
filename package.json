@@ -1,0 +1,39 @@
+{
+  "name": "mxssages",
+  "version": "1.0.0",
+  "description": "Mxssages",
+  "scripts": {
+    "dev": "webpack --mode development",
+    "dist": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OnceDot/Mxssages.git"
+  },
+  "keywords": [
+    "sms",
+    "sms-messages",
+    "javascript"
+  ],
+  "author": "Dot.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/OnceDot/Mxssages/issues"
+  },
+  "homepage": "https://github.com/OnceDot/Mxssages#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1",
+    "webpack-dev-server": "^3.3.1"
+  }
+}

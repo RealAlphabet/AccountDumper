@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>SMS History | Viewer</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div id="contact">
+            #
+        </div>
+
+        <div id="count_total" class="d-flex ml-auto">
+            0 messages
+        </div>
+    </header>
+
+    <aside>
+        <div id="select">
+            Importer
+        </div>
+
+        <div id="convs"></div>
+    </aside>
+
+    <main>
+
+    </main>
+
+    <footer>
+        <div id="count_received"></div>
+        <div id="count_chars" class="ml-auto"></div>
+        <div id="count_sended" class="ml-auto"></div>
+    </footer>
+
+    <input id="file" type="file" accept="plain/text">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            
+            margin: 0 0 0 15rem;
+            padding: 3rem 0;
+        }
+
+        aside {
+            background-color: #fcfcfc;
+            border-right: 1px solid #ececec;
+
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            overflow: hidden;
+            overflow-y: auto;
+            width: 15rem;
+        }
+
+        header, footer {
+            background-color: #fff;
+            position: fixed;
+            display: flex;
+            right: 0;
+        }
+
+        header {
+            box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+            left: 15rem;
+            top: 0;
+        }
+
+        footer {
+            border-top: 1px solid #ececec;
+            bottom: 0;
+            height: 51px;
+            left: 15rem;
+        }
+
+        header > div, footer > div {
+            padding: 1rem;
+            min-width: 3rem;
+        }
+
+        main {
+            padding: 1rem;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+
+        /********************************************************************/
+        /* HEADER                                                           */
+        /********************************************************************/
+
+        .ml-5 {
+            margin-left: 1.5rem;
+        }
+
+        .ml-auto {
+            margin-left: auto;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        /********************************************************************/
+        /* ASIDE                                                            */
+        /********************************************************************/
+
+        input {
+            display: none;
+        }
+
+        #select, #convs  {
+            cursor: pointer;
+        }
+
+        #select {
+            border-bottom: 1px solid #ececec;
+            padding: 1rem;
+        }
+
+        .phone {
+            display: flex;
+            align-items: center;
+            transition: background-color ease-in-out .2s;
+            cursor: pointer;
+        }
+
+        .phone:hover {
+            background-color: #ececec;
+        }
+
+        .phone.selected {
+            background-color: #44d159;
+            color: #fff;
+        }
+
+        .number {
+            padding: 1rem;
+        }
+
+        .avatar {
+            border-radius: 50%;
+            border: 1px solid gray;
+            overflow: hidden;
+            width: 2rem;
+            height: 2rem;
+        }
+
+        .avatar img {
+            
+        }
+
+        /********************************************************************/
+        /* MESSAGES                                                         */
+        /********************************************************************/
+
+        .message {
+            padding: .15rem 0;
+        }
+
+        .message:first-child, .message:last-child {
+            padding: 0;
+        }
+
+        .message::after {
+            display: block;
+            content: "";
+            clear: both;
+        }
+
+        .message > div {
+            max-width: 75%;
+            border-radius: .5rem;
+            padding: .75rem;
+        }
+
+        .float-left {
+            float: left;
+            background-color: #ececec;
+        }
+
+        .float-right {
+            float: right;
+            background-color: #44d159;
+            color: #fff;
+        }
+    </style>
+
+    <script>
+        var json;
+        var convs   = $('#convs');
+        var contact = $('#contact');
+        var main    = $('main');
+        var prev    = $();
+        
+        ////////////////////////////////
+
+        var count_total     = $('#count_total');
+        var count_chars     = $('#count_chars');
+
+        var count_received  = $('#count_received');
+        var count_sended    = $('#count_sended');
+
+        ////////////////////////////////
+
+        function init() {
+
+            for (var phone in json) {
+                // convs.append(`<div class="phone"><div class="avatar"><img src="https://cdn.pixabay.com/photo/2014/04/02/14/11/male-306408_960_720.png"></img></div><div class="number">${phone}</div></div>`);
+                convs.append(`<div class="phone"><div class="number">${phone}</div></div>`);
+            }
+
+            $('.phone').click(function() {
+
+                var conv        = json[this.innerText];
+                var chars_1     = 0;
+                var chars_2     = 0;
+                var received    = 0;
+                var sended      = 0;
+
+                ////////////////////////////////
+
+                prev.removeClass('selected');
+
+                prev = $(this);
+
+                prev.addClass('selected');
+
+                ////////////////////////////////
+
+                contact.text(this.innerText);
+
+                main.empty();
+
+                ////////////////////////////////
+
+                for (var message of conv) {
+
+                    var body = message.body.replace(/\n/g, '<br>');
+
+                    if (message.type == 1) {
+                        main.append(`<div class="message"><div class="float-left">${body}</div></div>`);
+
+                        chars_1     += body.length;
+                        received    ++;
+
+                    } else {
+                        main.append(`<div class="message"><div class="float-right">${body}</div></div>`);
+
+                        chars_2     += body.length;
+                        sended      ++;
+                    }
+                }
+
+                ////////////////////////////////
+
+                count_total.text(`${conv.length} messages`);
+                count_chars.text(`${chars_1} | ${chars_2}`);
+
+                count_received.text(`${received}`);
+                count_sended.text(`${sended}`);
+            });
+        }
+
+        ////////////////////////////////
+
+        $('#select').click(function() {
+            $('#file').click();
+        });
+
+        ////////////////////////////////
+
+        $('#file').change(function () {
+            var reader = new FileReader();
+
+            reader.onload = function () {
+
+                json = JSON.parse(reader.result);
+
+                init();
+            };
+
+            convs.empty();
+
+            reader.readAsText(this.files[0]);
+        });
+    </script>
+</body>
+
+</html>
