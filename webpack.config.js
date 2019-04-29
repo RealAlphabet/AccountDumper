@@ -9,7 +9,7 @@ module.exports = {
     },
     optimization: {
 		splitChunks: {
-      		chunks: 'all',
+      		chunks: 'all'
     	}
 	},
     module: {
@@ -30,9 +30,16 @@ module.exports = {
     },
     plugins: [
         new HtmlWebPackPlugin({
-            template: "./src/index.html",
-            filename: "./index.html"
+            template: './src/index.html',
+            filename: './index.html'
         })
     ],
+    devServer: {
+    	host: '0.0.0.0',
+        port: 1337,
+        disableHostCheck: true,
+    	compress: true,
+        hot: true
+    },
     devtool: false
 };

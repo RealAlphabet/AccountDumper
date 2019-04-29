@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Mxssages",
   "scripts": {
-    "dev": "webpack --mode development",
-    "dist": "webpack --mode production"
+    "start": "webpack-dev-server",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
